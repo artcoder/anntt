@@ -16,18 +16,19 @@ import math
 # using the form: y = f(x)
 # make input data
 #x = np.arange(0.0, math.pi * 2.0, 0.01).reshape(-1, 1)
-x = np.arange(0.0, math.pi * 2.0, 0.01)
+x = np.arange(0.0, 10, 0.01)
 #print("x:", x[0:10])
 
 np.random.shuffle(x)
 #print("x:", x[0:10])
 
-x = x.reshape(-1, 1)
-#print("x:", x[0:10])
 
 #make output data
 y1 = list(map(lambda i: math.sin(i), x))
 y = np.asarray(y1).reshape(-1,1)
+
+x = x.reshape(-1, 1)
+#print("x:", x[0:10])
 
 #print("y:", y)
 print("length of y:", len(y))
@@ -60,23 +61,23 @@ print("length of x_train:", len(x_train))
 model = Sequential()
 
 # Add an the input layer and hidden layer
-model.add(Dense(1000, activation='sigmoid', input_dim=1))
-model.add(keras.layers.Dropout(0.5))
+model.add(Dense(100, activation='tanh', input_dim=1))
+model.add(keras.layers.Dropout(0.1))
 
 # Add a hidden layer 
-model.add(Dense(10, activation='sigmoid'))
-model.add(keras.layers.Dropout(0.5))
+model.add(Dense(100, activation='tanh'))
+model.add(keras.layers.Dropout(0.1))
 
 # Add an output layer 
-model.add(Dense(1, activation='sigmoid'))
+model.add(Dense(1, activation='tanh'))
 
 
 # was 'binary_crossentropy'
 #model.compile(loss='mean_absolute_error', optimizer='adam', metrics=['accuracy'])
-model.compile(loss='mean_absolute_error', optimizer='sgd', metrics=['accuracy'])
+model.compile(loss='mean_squared_error', optimizer='sgd', metrics=['accuracy'])
                    
 #? batch_size= len(x_train)
-model.fit(x_train, y_train, epochs=250, batch_size= 1, verbose=0)
+model.fit(x_train, y_train, epochs=100, batch_size= 1, verbose=0)
 
 
 y_pred = model.predict(x_train)
@@ -86,7 +87,7 @@ y_pred = model.predict(x_train)
 #print("y:", y[0:10])
 
 
-plt.plot(x_train, y_pred,'r,')
+plt.plot(x_train, y_pred,'r.')
 plt.plot(x, y,'g,')
 plt.show()
 
