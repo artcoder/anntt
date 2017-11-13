@@ -62,19 +62,18 @@ model = Sequential()
 
 # Add an the input layer and hidden layer
 model.add(Dense(100, activation='tanh', input_dim=1))
-model.add(keras.layers.Dropout(0.1))
+#model.add(keras.layers.Dropout(0.1))
 
 # Add a hidden layer 
 model.add(Dense(100, activation='tanh'))
-model.add(keras.layers.Dropout(0.1))
+#model.add(keras.layers.Dropout(0.1))
 
 # Add an output layer 
 model.add(Dense(1, activation='tanh'))
 
 
 # was 'binary_crossentropy'
-#model.compile(loss='mean_absolute_error', optimizer='adam', metrics=['accuracy'])
-model.compile(loss='mean_squared_error', optimizer='sgd', metrics=['accuracy'])
+model.compile(loss='mean_absolute_error', optimizer='adam', metrics=['accuracy'])
                    
 #? batch_size= len(x_train)
 model.fit(x_train, y_train, epochs=100, batch_size= 1, verbose=0)
