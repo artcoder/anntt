@@ -10,22 +10,18 @@ from sklearn.preprocessing import StandardScaler
 from keras.models import Sequential
 from keras.layers import Dense
 from sklearn.metrics import confusion_matrix, precision_score, recall_score, f1_score, cohen_kappa_score
+import math
 
+# using the variables in the form: y = f(x)
+# make input data
+x = np.arange(0.0, math.pi * 2.0, 0.01).reshape(-1, 1)
 
-# Read in white wine data 
-white = pd.read_csv("http://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality-white.csv", sep=';')
+#make output data
+y1 = list(map(lambda i: math.sin(i), x))
+y = np.asarray(y1).reshape(-1,1)
 
-# Read in red wine data 
-red = pd.read_csv("http://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality-red.csv", sep=';')
-
-
-# Print info on white wine
-#print(white.info())
-
-# Print info on red wine
-#print(red.info())
-
-
+#print("y:", y)
+print("length of y:", len(y))
 
 #fig, ax = plt.subplots(1, 2)
 
@@ -46,65 +42,39 @@ red = pd.read_csv("http://archive.ics.uci.edu/ml/machine-learning-databases/wine
 
 
 
-# Add `type` column to `red` with value 1
-red['type'] = 1
-
-# Add `type` column to `white` with value 0
-white['type'] = 0
-
-# Append `white` to `red`
-wines = red.append(white, ignore_index=True)
-
-
-
-#corr = wines.corr()
-#sns.heatmap(corr, 
-#            xticklabels=corr.columns.values,
-#            yticklabels=corr.columns.values)
-#sns seems to use plt internally		
-#plt.show()
-
-
-
-
-
-# Specify the data 
-X=wines.ix[:,0:11]
-
-# Specify the target labels and flatten the array 
-y=np.ravel(wines.type)
-
 # Split the data up in train and test sets
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42)
+#x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.33, random_state=42)
+x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.33)
 
+print("length of x_train:", len(x_train))
 
 #print("before")
-#print( X_test)
+#print( x_test)
 
 # Define the scaler 
-scaler = StandardScaler().fit(X_train)
+scaler = StandardScaler().fit( x )
 
 # Scale the train set
-X_train = scaler.transform(X_train)
+#x_train = scaler.transform(x_train)
 
 # Scale the test set
-X_test = scaler.transform(X_test)
+#x_test = scaler.transform(x_test)
 
 #print("after")
-#print( X_test)
+#print( x_test)
 
 
 # Initialize the constructor
 model = Sequential()
 
-# Add an input layer 
-model.add(Dense(12, activation='relu', input_shape=(11,)))
+# Add an input layer and hiddel layer
+model.add(Dense(100, activation='relu', input_dim=1))
 
-# Add one hidden layer 
-model.add(Dense(8, activation='relu'))
+# Add a hidden layer 
+#model.add(Dense(100, activation='relu'))
 
 # Add an output layer 
-model.add(Dense(1, activation='sigmoid'))
+model.add(Dense(1, activation='tanh'))
 
 
 
@@ -113,26 +83,30 @@ model.compile(loss='binary_crossentropy',
               optimizer='adam',
               metrics=['accuracy'])
                    
-model.fit(X_train, y_train,epochs=20, batch_size=1, verbose=1)
+model.fit(x_train, y_train, epochs=1000, batch_size=400, verbose=1)
+
+
+y_pred = model.predict(x_test)
+
+print("x_test:", x_test[0:10])
+print("y_pred:", y_pred[0:10])
+print("y_test:", y_test[0:10])
 
 
 
-y_pred = model.predict(X_test)
+
+score = model.evaluate(x_test, y_test,verbose=1)
+print("\nScore:", score)
 
 
+#confusion_matrix(y_test, y_pred)
+#print("confusion matrix:", confusion_matrix)
 
-score = model.evaluate(X_test, y_test,verbose=1)
+#precision_score(y_test, y_pred.round())
 
-print(score)
+#recall_score(y_test, y_pred.round())
 
+#f1_score(y_test,y_pred.round())
 
-confusion_matrix(y_test, y_pred.round())
-
-precision_score(y_test, y_pred.round())
-
-recall_score(y_test, y_pred.round())
-
-f1_score(y_test,y_pred.round())
-
-cohen_kappa_score(y_test, y_pred.round())
+#cohen_kappa_score(y_test, y_pred.round())
 
