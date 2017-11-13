@@ -1,4 +1,6 @@
-#based on https://www.datacamp.com/community/tutorials/deep-learning-python
+# Python 3
+# Based on code from
+# https://www.datacamp.com/community/tutorials/deep-learning-python
 
 # Import pandas 
 import pandas as pd
@@ -14,16 +16,18 @@ from sklearn.metrics import confusion_matrix, precision_score, recall_score, f1_
 import math
 
 # using the form: y = f(x)
+# x is the input
+# y is the output
+
 # make input data
-#x = np.arange(0.0, math.pi * 2.0, 0.01).reshape(-1, 1)
 x = np.arange(0.0, 10, 0.01)
 #print("x:", x[0:10])
 
-np.random.shuffle(x)
+#np.random.shuffle(x)
 #print("x:", x[0:10])
 
 
-#make output data
+# make output data
 y1 = list(map(lambda i: math.sin(i), x))
 y = np.asarray(y1).reshape(-1,1)
 
@@ -36,31 +40,14 @@ print("length of y:", len(y))
 
 
 # Split the data up in train and test sets
-#x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.33, random_state=42)
-x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.33)
-
+x_train, x_test, y_train, y_test = train_test_split(x, y)
 print("length of x_train:", len(x_train))
-
-#print("before")
-#print( x_test)
-
-# Define the scaler 
-#scaler = StandardScaler().fit( x )
-
-# Scale the train set
-#x_train = scaler.transform(x_train)
-
-# Scale the test set
-#x_test = scaler.transform(x_test)
-
-#print("after")
-#print( x_test)
-
 
 # Initialize the constructor
 model = Sequential()
 
-# Add an the input layer and hidden layer
+# Add an the input layer and first layer in one step
+# tanh is used since it has positive and negative output like the sine function
 model.add(Dense(100, activation='tanh', input_dim=1))
 #model.add(keras.layers.Dropout(0.1))
 
@@ -68,40 +55,30 @@ model.add(Dense(100, activation='tanh', input_dim=1))
 model.add(Dense(100, activation='tanh'))
 #model.add(keras.layers.Dropout(0.1))
 
-# Add an output layer 
+# Add the output layer 
 model.add(Dense(1, activation='tanh'))
 
 
-# was 'binary_crossentropy'
-model.compile(loss='mean_absolute_error', optimizer='adam', metrics=['accuracy'])
+model.compile(loss='mean_absolute_error', optimizer='adam', metrics=['mean_squared_error'])
                    
-#? batch_size= len(x_train)
-model.fit(x_train, y_train, epochs=100, batch_size= 1, verbose=0)
-
+history = model.fit(x_train, y_train, epochs=10000, batch_size= 100, verbose=0)
+#plt.plot(history.history['mean_squared_error'])
 
 y_pred = model.predict(x_train)
+plt.draw()
 
 #print("x:", x[0:10])
 #print("y_pred:", y_pred[0:10])
 #print("y:", y[0:10])
 
-
+# prediction in red
 plt.plot(x_train, y_pred,'r.')
+# truth in green
 plt.plot(x, y,'g,')
-plt.show()
+plt.draw()
 
-score = model.evaluate(x_test, y_test,verbose=1)
+score = model.evaluate(x_test, y_test, batch_size= 1, verbose=1)
 print("\nScore:", score)
 
 
-#confusion_matrix(y_test, y_pred)
-#print("confusion matrix:", confusion_matrix)
-
-#precision_score(y_test, y_pred.round())
-
-#recall_score(y_test, y_pred.round())
-
-#f1_score(y_test,y_pred.round())
-
-#cohen_kappa_score(y_test, y_pred.round())
-
+plt.show() # A blocking call to keep the window open
