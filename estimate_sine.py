@@ -14,7 +14,14 @@ import math
 
 # using the variables in the form: y = f(x)
 # make input data
-x = np.arange(0.0, math.pi * 2.0, 0.01).reshape(-1, 1)
+#x = np.arange(0.0, math.pi * 2.0, 0.01).reshape(-1, 1)
+x = np.arange(0.0, math.pi * 2.0, 0.1)
+print("x:", x[0:10])
+
+np.random.shuffle(x)
+print("x:", x[0:10])
+
+x = x.reshape(-1, 1)
 
 #make output data
 y1 = list(map(lambda i: math.sin(i), x))
@@ -22,23 +29,6 @@ y = np.asarray(y1).reshape(-1,1)
 
 #print("y:", y)
 print("length of y:", len(y))
-
-#fig, ax = plt.subplots(1, 2)
-
-#ax[0].hist(red.alcohol, 10, facecolor='red', alpha=0.5, label="Red wine")
-#ax[1].hist(white.alcohol, 10, facecolor='white', ec="black", lw=0.5, alpha=0.5, label="White wine")
-
-#fig.subplots_adjust(left=0.125, right=.9, bottom=0.1, top=0.9, hspace=0.2, wspace=0.5)
-#ax[0].set_ylim([0, 1000])
-#ax[0].set_xlabel("Alcohol in % Vol")
-#ax[0].set_ylabel("Frequency")
-#ax[1].set_xlabel("Alcohol in % Vol")
-#ax[1].set_ylabel("Frequency")
-#ax[0].legend(loc='best')
-#ax[1].legend(loc='best')
-#fig.suptitle("Distribution of Alcohol in % Vol")
-
-#plt.show()
 
 
 
@@ -52,7 +42,7 @@ print("length of x_train:", len(x_train))
 #print( x_test)
 
 # Define the scaler 
-scaler = StandardScaler().fit( x )
+#scaler = StandardScaler().fit( x )
 
 # Scale the train set
 #x_train = scaler.transform(x_train)
@@ -68,32 +58,34 @@ scaler = StandardScaler().fit( x )
 model = Sequential()
 
 # Add an input layer and hiddel layer
-model.add(Dense(100, activation='relu', input_dim=1))
+model.add(Dense(10, activation='linear', input_dim=1))
 
 # Add a hidden layer 
-#model.add(Dense(100, activation='relu'))
+model.add(Dense(10, activation='linear'))
 
 # Add an output layer 
-model.add(Dense(1, activation='tanh'))
+model.add(Dense(1, activation='linear'))
 
 
+# was 'binary_crossentropy'
 
-
-model.compile(loss='binary_crossentropy',
+model.compile(loss='mean_absolute_error',
               optimizer='adam',
               metrics=['accuracy'])
                    
-model.fit(x_train, y_train, epochs=1000, batch_size=400, verbose=1)
+model.fit(x_train, y_train, epochs=100, batch_size=10, verbose=0)
 
 
-y_pred = model.predict(x_test)
+y_pred = model.predict(x)
 
-print("x_test:", x_test[0:10])
-print("y_pred:", y_pred[0:10])
-print("y_test:", y_test[0:10])
+#print("x:", x[0:10])
+#print("y_pred:", y_pred[0:10])
+#print("y:", y[0:10])
 
 
-
+plt.plot(x, y_pred,'r,')
+plt.plot(x, y,'g,')
+plt.show()
 
 score = model.evaluate(x_test, y_test,verbose=1)
 print("\nScore:", score)
