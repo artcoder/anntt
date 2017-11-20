@@ -18,6 +18,7 @@ from keras.layers import Dense
 
 # Make the input data
 raw_data = [ math.sin(i) for i in np.arange(0.0, 10, 0.01) ]
+# raw_data = [ [math.sin(i), i] for i in np.arange(0.0, 10, 0.01) ]
 
 width = 10
 x = []
