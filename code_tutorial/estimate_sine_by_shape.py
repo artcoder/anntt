@@ -18,6 +18,7 @@ from keras.layers import Dense
 
 # Make the input data
 raw_data = [ math.sin(i) for i in np.arange(0.0, 10, 0.01) ]
+time = np.arange(0.0, 10, 0.01)
 # raw_data = [ [math.sin(i), i] for i in np.arange(0.0, 10, 0.01) ]
 
 width = 10
@@ -30,6 +31,7 @@ for i in range(0, len(raw_data)-width-1):
     y.append([raw_data[i+width]])
 print("x:", x[0:5])
 print("y:", y[0:5])
+print("time:", time[0:5])
 
 # np.random.shuffle(x)
 # print("x:", x[0:10])
@@ -77,9 +79,10 @@ y_pred = model.predict(x_train)
 # fig1 = plt.figure(1)
 
 plt.title('Neural Network Estimation')
-plt.plot(x_train, y_pred, label='Prediction',
+
+plt.plot(time[0:len(y_pred)], y_pred, label='Prediction',
          color='red', marker='.', linestyle='None')
-plt.plot(x, y, label='Target', color='green', marker=',', linestyle='None')
+plt.plot(time, raw_data, label='Target', color='green', marker=',', linestyle='None')
 plt.legend()
 plt.text(5.5, -.9, 'Epochs={}, Batch size={}'.format(EPOCHS, BATCH_SIZE))
 plt.draw()
