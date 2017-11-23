@@ -1,1 +1,1 @@
-This folder has code used to learn how to use the libraries.
+This folder has code that is good for learning how to use the Keras library.
