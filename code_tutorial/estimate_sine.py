@@ -1,19 +1,18 @@
-# Python 3
+# for Python 3.6
 
 # Inspired by code from a tutorial at:
 # https://www.datacamp.com/community/tutorials/deep-learning-python
+# that is by Karlijn Willems May 2nd, 2017
 
 import math
-# import pandas as pd
 import matplotlib.pyplot as plt
-# import seaborn as sns
 from sklearn.model_selection import train_test_split
 import numpy as np
-# from sklearn.preprocessing import StandardScaler
-# import keras
 from keras.models import Sequential
 from keras.layers import Dense
-# from sklearn.metrics import confusion_matrix, precision_score, recall_score, f1_score, cohen_kappa_score
+
+EPOCHS = 10000
+BATCH_SIZE = 100
 
 # Using the form: y = f(x)
 # x is the input
@@ -57,12 +56,9 @@ model.add(Dense(100, activation='tanh'))
 # Add the output layer
 model.add(Dense(1, activation='tanh'))
 
-
 model.compile(loss='mean_absolute_error', optimizer='adam',
               metrics=['mean_squared_error'])
 
-EPOCHS = 10000
-BATCH_SIZE = 100
 history = model.fit(x_train, y_train, epochs=EPOCHS,
                     batch_size=BATCH_SIZE, verbose=0)
 # plt.plot(history.history['mean_squared_error'])
