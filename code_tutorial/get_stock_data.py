@@ -4,8 +4,8 @@
 # Based on the documentation at:
 # https://pandas-datareader.readthedocs.io/en/latest/index.html
 
-import pandas_datareader as pdr
 import datetime
+import pandas_datareader as pdr
 import requests_cache
 
 expire_after = datetime.timedelta(days=30)
