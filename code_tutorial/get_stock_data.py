@@ -1,22 +1,18 @@
-# for Python 3
+# for Python 3 on Windows
 # Get Stock Data
+# from a CSV file
 
 # Based on the documentation at:
-# https://pandas-datareader.readthedocs.io/en/latest/index.html
+# http://nbviewer.jupyter.org/urls/bitbucket.org/hrojas/learn-pandas/raw/master/lessons/01%20-%20Lesson.ipynb
 
-import datetime
-import pandas_datareader as pdr
-import requests_cache
+# using data from:
+# https://www.nasdaq.com/symbol/amd/historical
 
-expire_after = datetime.timedelta(days=30)
-session = requests_cache.CachedSession(cache_name='cache', backend='sqlite', expire_after=expire_after)
+# import matplotlib.pyplot as plt
+import pandas as pd 
 
-# housekeeping
-session.cache.remove_old_entries(datetime.datetime.utcnow() - expire_after)
+Location = r'C:\Data\code\anntt\code_tutorial\HistoricalQuotes.csv'
+df = pd.read_csv(Location)
 
-start = datetime.datetime(2010, 1, 1)
-end = datetime.datetime(2013, 1, 27)
-
-f = pdr.data.DataReader("F", 'yahoo', start, end, session=session)
-
-print(f.ix['2010-01-04'])
+#print(df.ix['2018-01-04'])
+print(df.head(10))

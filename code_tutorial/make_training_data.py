@@ -2,31 +2,24 @@
 # Make Training Data
 
 import datetime
-import pandas_datareader as pdr
 import pandas as pd
-import requests_cache
 
-expire_after = datetime.timedelta(days=30)
-session = requests_cache.CachedSession(cache_name='cache', backend='sqlite', expire_after=expire_after)
+# maybe a neural network would be easier to train with the days of the week expanded
+dow_expanded = {0: [1,0,0,0,0], 1:[0,1,0,0,0], 2:[0,0,1,0,0], 3:[0,0,0,1,0], 4:[0,0,0,0,1]}
 
-# housekeeping
-#session.cache.remove_old_entries(datetime.datetime.utcnow() - expire_after)
+Location = r'C:\Data\code\anntt\code_tutorial\HistoricalQuotes.csv'
+df = pd.read_csv(Location)
 
-dow_expanded = {0: [1,0,0,0,0], 1:[0,1,0,0,0], 2:[0,0,1,0,0], 3:[0,0,0,1,0],
-4:[0,0,0,0,1]}
+#print(df.ix['2018-01-04'])
+#print(df.head(10))
 
-start = datetime.datetime(2010, 1, 1)
-end = datetime.datetime(2013, 1, 27)
+#print(df['date'] )
 
-f = pdr.data.DataReader("F", 'yahoo', start, end, session=session)
+df['dow_code'] = pd.to_datetime(df['date'].values).dayofweek
+#df['dow'] = df['dow_code'].apply(lambda x: dow_expanded[x])
 
-#print(f.ix['2010-01-04'])
-
-f['dow_code'] = pd.to_datetime(f.index.values).dayofweek
-f['dow'] = f['dow_code'].apply(lambda x: dow_expanded[x])
-
-print(f.dtypes)
+#print(df.dtypes)
 #print( f.columns)
 
-print(f.head(5))
+print(df.head(10))
 
