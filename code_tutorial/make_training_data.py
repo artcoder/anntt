@@ -1,9 +1,15 @@
 # for Python 3
 # Make Training Data
+# David Guilbeau
 
 import datetime
 import pandas as pd
 
+# Based on the documentation at:
+# http://nbviewer.jupyter.org/urls/bitbucket.org/hrojas/learn-pandas/raw/master/lessons/01%20-%20Lesson.ipynb
+
+# Use data from:
+# https://www.nasdaq.com/symbol/amd/historical
 
 # Raw data
 Location = r'C:\Data\code\anntt\code_tutorial\HistoricalQuotes.csv'
@@ -23,15 +29,11 @@ df['dow_code'] = pd.to_datetime(df['date'].values).dayofweek
 #print(df.dtypes)
 #print( f.columns)
 
-print(df.head(10))
-
 # short EMA (Exponential Moving Average)
-ema_short = df['close'].ewm(span=9, adjust=False).mean()
-
+df['short_EMA'] = df['close'].ewm(span=9, adjust=False).mean()
 print('short ema')
-print(ema_short.head(10))
 
 # long EMA (Exponential Moving Average)
-ema_long = df['close'].ewm(span=200, adjust=False).mean()
+df['long_EMA'] = df['close'].ewm(span=200, adjust=False).mean()
 print('long ema')
-print(ema_long.head(10))
+print(df.head(10))
