@@ -40,13 +40,15 @@ print(df.head(10))
 
 
 # prediction target setup
+
 # find the normal range of the stock.
 
 # prediction target
-# if in the the next 5 days the stock rises to at least the top of its normal range,
-# up = 1, down = 0, sideways = 0
+# if in the the next 5 days the stock is in the top of its normal range,
+# up = 1
 
-# if in the the next 5 days the stock falls to at least the bottom of its normal range,
-# # up = 1, down = 0, sideways = 0
+# if in the the next 5 days the stock is in the bottom of its normal range,
+# down = 1
 
-# if neither up nor down, then # up = 0, down = 0, sideways = 1
+# if in the the next 5 days the stock is in the middel of it's normal range
+# sideways = 1
